@@ -44,7 +44,7 @@ export async function GET() {
     }
 
     const winQ = await db().from('payouts').select('round_id, wallet, handle, lamports, status, tx_signature')
-      .order('round_id', { ascending: false }).limit(10);
+      .neq('status', 'skipped').order('round_id', { ascending: false }).limit(10);
 
     return NextResponse.json({
       now: Date.now(),
