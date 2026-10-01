@@ -26,7 +26,7 @@ export const config = {
    * Default: under 10 SOL every 5 min, 10+ every 3 min, 25+ every 2 min, 50+ every minute, 100+ every 30 sec.
    */
   get roundTiers(): { minSol: number; seconds: number }[] {
-    const raw = process.env.ROUND_TIERS || '0:300,10:180,25:120,50:60,100:30';
+    const raw = process.env.ROUND_TIERS || '0:300';
     const tiers = raw.split(',').map((t) => {
       const [a, b] = t.split(':').map(Number);
       return { minSol: a, seconds: b };

@@ -246,6 +246,8 @@ export default function Home() {
             <div className="bar"><i style={{ width: `${playing ? 100 : Math.max(0, 100 - (msLeft / roundMs) * 100)}%` }} /></div>
             {state && (locked
               ? <p className="hint" style={{ marginTop: 8 }}>Practice rounds every {dur(roundMs)}.</p>
+              : state.tiers.length <= 1
+              ? <p className="hint" style={{ marginTop: 8 }}>A round every <b>{dur(roundMs)}</b>.</p>
               : <>
                   <p className="hint" style={{ marginTop: 8 }}>Bigger pool, faster rounds. Right now: a round every <b>{dur(roundMs)}</b>.</p>
                   <table style={{ marginTop: 6, fontSize: 12.5 }}><tbody>
