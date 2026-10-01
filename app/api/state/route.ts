@@ -3,6 +3,7 @@ import { db } from '@/lib/supabase';
 import { config } from '@/lib/config';
 import { currentRound, roundEntries, settleIfDue, Round } from '@/lib/rounds';
 import { poolSummary, roundMsFor } from '@/lib/pool';
+import { gameForRound, rotation } from '@/lib/games/rotation';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -34,6 +35,7 @@ export async function GET() {
       const le = await roundEntries(last.id);
       lastRound = {
         id: last.id,
+        game: gameForRound(last.id).key,
         seed: Number(last.seed),
         blockhash: last.blockhash,
         settledAt: last.settled_at,
@@ -50,6 +52,7 @@ export async function GET() {
       now: Date.now(),
       round: {
         id: round.id,
+        game: gameForRound(round.id).key,
         endsAt: new Date(round.ends_at).getTime(),
         players: entries.map((e) => ({ handle: e.handle || short(e.wallet), wallet: e.wallet })),
       },
@@ -62,6 +65,7 @@ export async function GET() {
       maxPayoutLamports: Math.round(config.maxPayoutSol * 1e9),
       roundMs: roundMsFor(pool.lamports, pool.unlocked),
       tiers: config.roundTiers,
+      rotation: rotation().map((g) => g.key),
       tokenMint: config.tokenMint,
       lastRound,
       winners: (winQ.data ?? []).map((p) => ({

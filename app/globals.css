@@ -1,6 +1,6 @@
 :root{
-  --pine:#0E2419;--pine-2:#163527;--card:#F4F7F1;--ink:#10251A;--ink-soft:#5A6F62;--line:#D5DED5;
-  --flag:#E0412B;--gold:#F2C230;--on-pine:#E6EFE8;--on-pine-soft:#9DB5A6;--good:#2E7D4F;
+  --pine:#0B100D;--pine-2:#152019;--card:#F3F7F2;--ink:#0E1A12;--ink-soft:#56685B;--line:#D3DDD4;
+  --flag:#2BD46A;--gold:#F2C230;--on-pine:#E8F0EA;--on-pine-soft:#97AC9D;--good:#1F8A4A;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -14,7 +14,7 @@ h1 span{color:var(--flag)}
 .tag{margin:6px 0 0;color:var(--on-pine-soft);max-width:60ch}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
 @media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
-.course{position:relative;border-radius:10px;overflow:hidden;background:#7FB6D9;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.course{position:relative;border-radius:10px;overflow:hidden;background:#101A14;box-shadow:0 12px 40px rgba(0,0,0,.35)}
 .course canvas{display:block;width:100%;height:auto}
 .hud{position:absolute;left:12px;top:10px;display:flex;gap:8px;flex-wrap:wrap;font-family:var(--f-mono),monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 .hud span{background:rgba(14,36,25,.78);color:var(--on-pine);padding:4px 8px;border-radius:4px}
@@ -31,7 +31,7 @@ h1 span{color:var(--flag)}
 .pool{font-family:var(--f-display),Impact,sans-serif;font-size:40px;line-height:1;margin:6px 0 2px;font-variant-numeric:tabular-nums}
 .pool small{font-family:var(--f-mono),monospace;font-size:14px;font-weight:700;color:var(--ink-soft)}
 .payout{margin:0;font-size:14px}
-.payout b{color:var(--flag)}
+.payout b{color:var(--good)}
 .clock .t{font-family:var(--f-mono),monospace;font-weight:700;font-size:34px;font-variant-numeric:tabular-nums;line-height:1}
 .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:10px}
 .bar i{display:block;height:100%;background:var(--flag)}
@@ -41,7 +41,7 @@ button{font:inherit;cursor:pointer}
 .btn:focus-visible,input:focus-visible,.cta:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 form.enter{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 input{font:inherit;font-size:14px;width:100%;padding:9px 10px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink)}
-.cta{background:var(--flag);color:#fff;border:0;border-radius:6px;padding:11px;font-weight:700}
+.cta{background:var(--flag);color:#062612;border:0;border-radius:6px;padding:11px;font-weight:700}
 .cta:disabled{opacity:.5;cursor:default}
 .msg{font-size:13px;min-height:20px;margin:0}
 .msg.err{color:#B3261E}.msg.ok{color:var(--good)}
@@ -100,7 +100,7 @@ tr.mine td{box-shadow:inset 3px 0 0 #FF5A3C}
 .feed .right{display:flex;align-items:center;gap:10px}
 .share{font-size:12.5px;font-weight:700;color:var(--card);background:var(--ink);padding:3px 9px;border-radius:999px;text-decoration:none;white-space:nowrap}
 .steps{margin:8px 0 0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px}
-.steps a{color:var(--flag);font-weight:600}
+.steps a{color:var(--good);font-weight:600}
 
 /* ---- phones: keep the course pinned on screen while you scroll the controls ---- */
 @media (max-width:900px){
@@ -134,3 +134,9 @@ button.ca:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .ca .k{color:var(--gold);font-weight:700;letter-spacing:.08em}
 .ca .v{font-variant-numeric:tabular-nums}
 .ca .c{font-family:var(--f-body),sans-serif;font-weight:700;font-size:11.5px;background:var(--gold);color:var(--ink);border-radius:4px;padding:2px 6px}
+
+/* Called It: game rotation strip */
+.strip{display:flex;flex-wrap:wrap;gap:6px}
+.strip span{font-family:var(--f-mono),monospace;font-size:11.5px;padding:4px 9px;border-radius:999px;background:var(--pine-2);color:var(--on-pine-soft);border:1px solid rgba(230,239,232,.12)}
+.strip span.next{background:var(--card);color:var(--ink);border-color:var(--card);font-weight:700}
+.strip span.now{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}

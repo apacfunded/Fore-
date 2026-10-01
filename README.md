@@ -1,3 +1,13 @@
+# Called It: the callout arcade
+
+**foregolf.lol now runs the Called It arcade.** Every round plays a different game, taking turns through 10: Golf (the 3D par 5), Plinko, Duck Derby, Skee-Ball, Darts, Bowling, Half-Court, Coin Pusher, Sumo Ring and Moon Shot. Only the picture changes: entry, the pool, payouts, the CA check and the winner pick (`seed mod entries`) work exactly as before. Golf rounds use the existing 3D course in `lib/course3d.ts`; the other games live in `lib/games/` and draw on `components/ArcadeCanvas.tsx`.
+
+- **Game order**: round 1 is Golf, round 2 Plinko, and so on, then it loops. A round with no callouts stays open, so its game waits until someone plays it.
+- **Choose or reorder games** with `NEXT_PUBLIC_GAMES` in Vercel, a comma list of keys: `golf, plinko, derby, skee, darts, bowling, hoops, pusher, sumo, moon`. Unset plays all 10. Redeploy after changing it.
+- **Ticker and CA**: the site shows `NEXT_PUBLIC_TOKEN_SYMBOL` (defaults to CALLED) and the CA from `TOKEN_MINT` or `lib/token.ts`.
+
+---
+
 # Fore! ($FORE)
 
 A live golf game for $FORE. Players post a callout on pump.fun, paste the link plus the Solana address they want paid to, and get a ball on the tee. Everyone on the tee swings together each round, and the hole in one wins 10% of the pool, up to 0.5 SOL per win. The bigger the pool, the faster rounds come. You send winnings yourself and mark them paid on the admin page.
