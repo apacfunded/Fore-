@@ -116,5 +116,7 @@ export async function relock() {
 
 export async function adjustPool(deltaSol: number) {
   const row = await readRow();
-  await db().from('pool_state').update({ adjust_sol: Number(row.adjust_sol) + deltaSol }).eq('id', 1);
+  const r = await db().from('pool_state').update({ adjust_sol: Number(row.adjust_sol ?? 0) + deltaSol }).eq('id', 1).select('adjust_sol');
+  if (r.error) throw new Error(`Couldn't save the pool change: ${r.error.message}`);
+  if (!r.data?.length) throw new Error("Couldn't save the pool change: the pool row is missing. Run supabase/schema.sql.");
 }

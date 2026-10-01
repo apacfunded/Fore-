@@ -40,7 +40,8 @@ export async function POST(req: Request) {
   if (body.action === 'adjust') {
     const delta = Number(body.deltaSol);
     if (!Number.isFinite(delta) || delta === 0) return NextResponse.json({ error: 'Enter an amount in SOL, like 0.5 or -0.2.' }, { status: 400 });
-    await adjustPool(delta);
+    try { await adjustPool(delta); }
+    catch (e) { return NextResponse.json({ error: e instanceof Error ? e.message : 'Update failed.' }, { status: 500 }); }
     return NextResponse.json({ ok: true });
   }
 
