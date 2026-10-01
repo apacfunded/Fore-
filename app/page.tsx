@@ -124,7 +124,8 @@ export default function Home() {
   }, [playing, playback?.roundId, clock, state]);
 
   let overlay: { big: string; who: string; sub: string; idle: boolean } | null = null;
-  const pumpUrl = state?.tokenMint ? `https://pump.fun/coin/${state.tokenMint}` : 'https://pump.fun';
+  // Until the coin launches (TOKEN_MINT=pending), point to pump.fun itself.
+  const pumpUrl = state?.tokenMint && ADDRESS_RE.test(state.tokenMint) ? `https://pump.fun/coin/${state.tokenMint}` : 'https://pump.fun';
   const minSol = state ? sol(state.poolInfo.minLamports) : '5';
   if (showWinner && playback) overlay = playback.practice
     ? { big: 'HOLE IN ONE', who: playback.players[playback.winner], sub: `Practice round · payouts start when the pool hits ${minSol} SOL`, idle: false }
