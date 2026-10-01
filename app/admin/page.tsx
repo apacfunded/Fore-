@@ -74,7 +74,7 @@ export default function Admin() {
               <td>Rounds</td>
               <td className="r">
                 {data.pool.unlocked
-                  ? <>Paying out · <button className="btn" style={{ padding: '2px 8px', fontSize: 11 }} onClick={() => post({ action: 'relock' }, `Back to practice rounds until the pool is ${sol(data.pool.minLamports)} SOL.`)}>Practice until {sol(data.pool.minLamports)} SOL</button></>
+                  ? data.pool.minLamports <= 0 ? <>Paying out</> : <>Paying out · <button className="btn" style={{ padding: '2px 8px', fontSize: 11 }} onClick={() => post({ action: 'relock' }, `Back to practice rounds until the pool is ${sol(data.pool.minLamports)} SOL.`)}>Practice until {sol(data.pool.minLamports)} SOL</button></>
                   : <>Practice rounds, no payouts until the pool reaches {sol(data.pool.minLamports)} SOL</>}
               </td>
             </tr>

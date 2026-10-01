@@ -17,7 +17,7 @@ export const config = {
   },
   get creatorFeePct() { return Number(process.env.CREATOR_FEE_PCT ?? '0.30'); },
   get startingPoolSol() { return Number(process.env.STARTING_POOL_SOL ?? '0'); },
-  get minPoolSol() { return Number(process.env.MIN_POOL_SOL ?? '5'); },
+  get minPoolSol() { return Number(process.env.MIN_POOL_SOL ?? '0'); },
   get maxPayoutSol() { return Number(process.env.MAX_PAYOUT_SOL ?? '0.5'); },
   get payoutShare() { return Number(process.env.PAYOUT_SHARE ?? '0.10'); },
   get practiceRoundMs() { return Number(process.env.PRACTICE_ROUND_SECONDS ?? '60') * 1000; },
