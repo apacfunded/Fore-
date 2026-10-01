@@ -25,6 +25,7 @@ export async function POST(req: Request) {
   const rawUrl = (body.calloutUrl ?? '').trim();
   let handle = (body.handle ?? '').trim();
 
+  if (!config.launched) return fail(`Entries open when $${process.env.NEXT_PUBLIC_TOKEN_SYMBOL || 'FORE'} launches.`, 403);
   if (!CALLOUT_RE.test(rawUrl)) return fail('Paste the link to your callout on pump.fun.');
   if (!isValidAddress(wallet)) return fail('Enter the Solana address you want to be paid to.');
   if (handle) {

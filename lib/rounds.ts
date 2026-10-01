@@ -46,6 +46,8 @@ export async function roundEntries(roundId: number): Promise<Entry[]> {
  * only the request that flips the round from 'open' to 'settling' does the work.
  */
 export async function settleIfDue(): Promise<{ settled: boolean; roundId?: number }> {
+  // Nothing runs until the coin's CA is set.
+  if (!config.launched) return { settled: false };
   await retryStuck();
   const round = await currentRound();
   const endsAt = new Date(round.ends_at).getTime();

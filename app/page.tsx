@@ -120,16 +120,19 @@ export default function Home() {
 
   // Countdown in the browser tab, so people with the tab in the background know when to look.
   useEffect(() => {
-    document.title = playing ? `⛳ Round ${playback?.roundId} live · Fore!` : state ? `${clock} · Fore!` : 'Fore!';
+    document.title = playing ? `⛳ Round ${playback?.roundId} live · Fore!` : state && ADDRESS_RE.test(state.tokenMint ?? '') ? `${clock} · Fore!` : 'Fore!';
   }, [playing, playback?.roundId, clock, state]);
 
   let overlay: { big: string; who: string; sub: string; idle: boolean } | null = null;
+  // The game stays closed until the coin's CA is set.
+  const live = !!state?.tokenMint && ADDRESS_RE.test(state.tokenMint);
   // Until the coin launches (TOKEN_MINT=pending), point to pump.fun itself.
   const pumpUrl = state?.tokenMint && ADDRESS_RE.test(state.tokenMint) ? `https://pump.fun/coin/${state.tokenMint}` : 'https://pump.fun';
   const minSol = state ? sol(state.poolInfo.minLamports) : '5';
   if (showWinner && playback) overlay = playback.practice
     ? { big: 'HOLE IN ONE', who: playback.players[playback.winner], sub: `Practice round · payouts start when the pool hits ${minSol} SOL`, idle: false }
     : { big: 'HOLE IN ONE', who: playback.players[playback.winner], sub: `+${sol(playback.payout)} SOL from the pool`, idle: false };
+  else if (state && !live) overlay = { big: 'OPENING SOON', who: '⛳', sub: `Rounds start when $${SYMBOL} launches`, idle: true };
   else if (!playing) {
     overlay = msLeft > 0
       ? { big: locked ? 'PRACTICE ROUND' : 'NEXT TEE OFF', who: clock, sub: locked ? `No payouts until the pool hits ${minSol} SOL` : players.length ? `${players.length} on the tee` : 'Waiting for callouts', idle: true }
@@ -241,8 +244,8 @@ export default function Home() {
           </div>
 
           <div className="card clock">
-            <p className="label">{playing ? 'Balls in the air' : locked ? 'Practice tee off in' : 'Tee off in'}</p>
-            <div className="t">{playing ? `${Math.floor(el)}s` : clock}</div>
+            <p className="label">{playing ? 'Balls in the air' : state && !live ? 'First tee off' : locked ? 'Practice tee off in' : 'Tee off in'}</p>
+            <div className="t">{playing ? `${Math.floor(el)}s` : state && !live ? 'At launch' : clock}</div>
             <div className="bar"><i style={{ width: `${playing ? 100 : Math.max(0, 100 - (msLeft / roundMs) * 100)}%` }} /></div>
             {state && (locked
               ? <p className="hint" style={{ marginTop: 8 }}>Practice rounds every {dur(roundMs)}.</p>
@@ -270,6 +273,7 @@ export default function Home() {
             alreadyIn={!!me && players.some((p) => p.wallet === me)}
             practiceUntil={locked ? minSol : null}
             pumpUrl={pumpUrl}
+            closed={!!state && !live}
           />
 
           <div className="card">
@@ -305,8 +309,8 @@ function CopyCA({ mint }: { mint: string | null }) {
   );
 }
 
-function EntryCard({ roundId, onEntered, savedAddress, alreadyIn, practiceUntil, pumpUrl }: {
-  roundId: number | null; onEntered: (address: string) => void; savedAddress?: string; alreadyIn: boolean; practiceUntil: string | null; pumpUrl: string;
+function EntryCard({ roundId, onEntered, savedAddress, alreadyIn, practiceUntil, pumpUrl, closed }: {
+  roundId: number | null; onEntered: (address: string) => void; savedAddress?: string; alreadyIn: boolean; practiceUntil: string | null; pumpUrl: string; closed: boolean;
 }) {
   const [handle, setHandle] = useState('');
   const [link, setLink] = useState('');
@@ -349,8 +353,8 @@ function EntryCard({ roundId, onEntered, savedAddress, alreadyIn, practiceUntil,
         <input id="link" placeholder="pump.fun link to your callout" value={link} onChange={(e) => setLink(e.target.value)} autoComplete="off" aria-label="pump.fun callout link" />
         <input id="address" placeholder="Solana address to get paid" value={address} onChange={(e) => setAddress(e.target.value)} autoComplete="off" spellCheck={false} aria-label="Solana payout address" />
         <input id="handle" placeholder="Name on your ball (optional)" value={handle} onChange={(e) => setHandle(e.target.value)} autoComplete="off" aria-label="Name on your ball" />
-        <button className="cta" type="submit" disabled={busy || alreadyIn}>
-          {alreadyIn ? "You're in this round" : busy ? 'Entering…' : practiceUntil ? 'Enter practice round' : 'Enter next round'}
+        <button className="cta" type="submit" disabled={busy || alreadyIn || closed}>
+          {closed ? `Opens when $${SYMBOL} launches` : alreadyIn ? "You're in this round" : busy ? 'Entering…' : practiceUntil ? 'Enter practice round' : 'Enter next round'}
         </button>
         <p className={`msg ${msg ? (msg.ok ? 'ok' : 'err') : ''}`} role="status">{msg?.text}</p>
         {practiceUntil && <p className="hint" style={{ color: 'var(--flag)', fontWeight: 600 }}>Practice round: winners won&apos;t be paid until the pool reaches {practiceUntil} SOL.</p>}

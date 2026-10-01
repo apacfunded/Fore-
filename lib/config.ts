@@ -15,6 +15,8 @@ export const config = {
     const env = (process.env.TOKEN_MINT ?? '').trim();
     return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(env) ? env : LAUNCHED_MINT || 'pending';
   },
+  /** The game only runs once the coin's CA is set. */
+  get launched() { return this.tokenMint !== 'pending'; },
   get creatorFeePct() { return Number(process.env.CREATOR_FEE_PCT ?? '0.30'); },
   get startingPoolSol() { return Number(process.env.STARTING_POOL_SOL ?? '0'); },
   get minPoolSol() { return Number(process.env.MIN_POOL_SOL ?? '0'); },
