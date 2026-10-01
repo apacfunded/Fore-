@@ -5,6 +5,7 @@ import { currentRound, roundEntries, settleIfDue, Round } from '@/lib/rounds';
 import { poolSummary, roundMsFor } from '@/lib/pool';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 // Avoid recomputing the pool on every poll from every visitor.
 type Pool = Awaited<ReturnType<typeof poolSummary>>;

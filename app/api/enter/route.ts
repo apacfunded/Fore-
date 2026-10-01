@@ -7,6 +7,7 @@ import { isValidAddress } from '@/lib/chain';
 import { CALLOUT_RE, HANDLE_RE, normalizeCallout } from '@/lib/entry';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 const fail = (error: string, status = 400) => NextResponse.json({ error }, { status });
 

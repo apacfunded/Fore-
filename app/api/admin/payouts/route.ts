@@ -5,6 +5,7 @@ import { config } from '@/lib/config';
 import { adjustPool, poolSummary, relock } from '@/lib/pool';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 function authed(req: Request) {
   const given = Buffer.from(req.headers.get('x-admin-key') ?? '');

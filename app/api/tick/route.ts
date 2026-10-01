@@ -3,6 +3,7 @@ import { config } from '@/lib/config';
 import { settleIfDue } from '@/lib/rounds';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 // Optional heartbeat. Point a cron service at /api/tick every minute with
 // the header  Authorization: Bearer <CRON_SECRET>  so rounds settle even when nobody has the site open.
