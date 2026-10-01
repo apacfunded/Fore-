@@ -1,4 +1,5 @@
 // Server-only settings, read from environment variables.
+import { LAUNCHED_MINT } from './token';
 function req(name: string): string {
   const v = process.env[name];
   if (!v) throw new Error(`Missing environment variable ${name}. See .env.example.`);
@@ -9,7 +10,11 @@ export const config = {
   get supabaseUrl() { return req('SUPABASE_URL'); },
   get supabaseKey() { return req('SUPABASE_SERVICE_ROLE_KEY'); },
   get rpcUrl() { return process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com'; },
-  get tokenMint() { return req('TOKEN_MINT'); },
+  // The Vercel setting wins when it holds a real address; otherwise use the one saved in lib/token.ts.
+  get tokenMint() {
+    const env = (process.env.TOKEN_MINT ?? '').trim();
+    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(env) ? env : LAUNCHED_MINT || 'pending';
+  },
   get creatorFeePct() { return Number(process.env.CREATOR_FEE_PCT ?? '0.30'); },
   get startingPoolSol() { return Number(process.env.STARTING_POOL_SOL ?? '0'); },
   get minPoolSol() { return Number(process.env.MIN_POOL_SOL ?? '5'); },

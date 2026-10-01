@@ -146,7 +146,10 @@ export default function Home() {
           <h1><img className="logo" src="/fore-logo.png" alt="" width={64} height={64} />FORE<span>!</span></h1>
           <p className="tag">Yell FORE on pump.fun to get a ball on the tee. Everyone on the tee swings together, and the bigger the pool, the faster rounds come. Hole in one takes {Math.round((state?.payoutShare ?? 0.1) * 100)}% of the pool, up to {state ? parseFloat(sol(state.maxPayoutLamports)) : 0.5} SOL.</p>
         </div>
-        <a className="pumplink" href={pumpUrl} target="_blank" rel="noreferrer">${SYMBOL} on pump.fun ↗</a>
+        <div className="toplinks">
+          <CopyCA mint={state?.tokenMint && ADDRESS_RE.test(state.tokenMint) ? state.tokenMint : null} />
+          <a className="pumplink" href={pumpUrl} target="_blank" rel="noreferrer">${SYMBOL} on pump.fun ↗</a>
+        </div>
       </header>
 
       <div className="grid">
@@ -284,6 +287,21 @@ export default function Home() {
         {' '}<b>The pool</b> is an estimate of creator rewards from the coin&apos;s trading volume on DexScreener. Winnings are sent by hand, usually soon after the round.
       </p>
     </div>
+  );
+}
+
+// The coin's contract address with a copy button, or "launching soon" before launch.
+function CopyCA({ mint }: { mint: string | null }) {
+  const [copied, setCopied] = useState(false);
+  if (!mint) return <div className="ca"><span className="k">CA</span><span className="v">launching soon</span></div>;
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(mint); setCopied(true); setTimeout(() => setCopied(false), 1500); }
+    catch { window.prompt('Copy the contract address:', mint); }
+  };
+  return (
+    <button type="button" className="ca" onClick={copy} title={mint} aria-label={`Copy contract address ${mint}`}>
+      <span className="k">CA</span><span className="v">{mint.slice(0, 6)}…{mint.slice(-6)}</span><span className="c">{copied ? 'Copied' : 'Copy'}</span>
+    </button>
   );
 }
 
